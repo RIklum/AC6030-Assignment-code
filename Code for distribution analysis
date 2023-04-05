@@ -1,0 +1,12 @@
+from pandas_datareader import data as pdr
+import yfinance as yf
+yf.pdr_override()
+%matplotlib inline
+df = pdr.data.get_data_yahoo('GC=F',start='2000-01-31',end='2023-03-31')
+Close = df.Close
+Close.index
+import plotly.offline as pyo
+pyo.init_notebook_mode(connected= True)
+pd.options.plotting.backend = 'plotly'
+Close.plot()
+Close.pct_change().plot(kind ='hist')
