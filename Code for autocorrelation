@@ -1,0 +1,35 @@
+from pandas_datareader import data as pdr
+import yfinance as yf
+yf.pdr_override()
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import datetime as dt
+%matplotlib inline
+start = dt.datetime(2019,3,31)
+end = dt.datetime(2023,3,31)
+tickers = ["VUKE.MI"]
+colnames = []
+for ticker in tickers:
+    data = pdr.get_data_yahoo(ticker, start, end)
+    if len(colnames) == 0:
+        combined = data[['Adj Close']].copy()
+    else:
+        combined = combined.join(data['Adj Close'])
+    colnames.append(ticker)
+    combined.columns = colnames
+        
+print(combined)
+def autocorr_daily(data):
+    returns = data.pct_change()
+    autocorrelation = returns['Adj Close'].autocorr()
+    return autocorrelation
+
+autocorr_daily(data)
+
+    for ticker in tickers:
+    plt.plot(combined[ticker],label =ticker)
+    
+plt.legend(loc="upper right")
+plt.show
+combined.plot()
